@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import MapComponent from './components/Map.jsx'
-import {Loading} from './components/Loading.jsx'
-import Chatbot from './components/Chatbot.jsx';
+import { Loading } from './components/Loading.jsx'
+import { Chatbot } from './components/Chatbot.jsx';
 
 const App = () => {
   const [places, setPlaces] = useState([]);
@@ -22,7 +22,7 @@ const App = () => {
   return (
     <>
       <div className="w-screen h-screen m-0 p-3 bg-slate-500">
-        <MapComponent locations={places}/>
+        <MapComponent locations={places} />
       </div>
     </>
   );
