@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import MapComponent from './components/Map.jsx';
-import InputComponent from './components/Input.jsx';
-import OpenAI from 'openai';
-import Sidebar from './components/Sidebar.jsx';
-import lugares from './assets/lugares.json'
+import { useEffect, useState } from "react";
+import MapComponent from "./components/Map.jsx";
+import InputComponent from "./components/Input.jsx";
+import OpenAI from "openai";
+import Sidebar from "./components/Sidebar.jsx";
+import lugares from "./assets/lugares.json";
 
 const App = () => {
   let [places, setPlaces] = useState([]);
   let [error, setError] = useState(null);
-  let [searchQuery, setSearchQuery] = useState('');
-  const [triggerSearch, setTriggerSearch] = useState(false)
+  let [searchQuery, setSearchQuery] = useState("");
+  const [triggerSearch, setTriggerSearch] = useState(false);
 
   console.log(import.meta.env.VITE_OPENAI_API_KEY);
   const openai = new OpenAI({
@@ -39,9 +39,9 @@ const App = () => {
         model: "gpt-4o-mini",
         messages: [
           { role: "system", content: context },
-          { role: "assistant", content: lugares }
-          { role: "user", content: query }
-        ]
+          { role: "assistant", content: lugares },
+          { role: "user", content: query },
+        ],
       });
 
       if (!response.choices || response.choices.length === 0) {
@@ -56,7 +56,9 @@ const App = () => {
         setError(null);
       } catch (parseError) {
         console.error("Error al parsear el JSON:", parseError);
-        throw new Error("Error al procesar la respuesta. Por favor, inténtelo de nuevo.");
+        throw new Error(
+          "Error al procesar la respuesta. Por favor, inténtelo de nuevo."
+        );
       }
     } catch (error) {
       handleError(error);
@@ -66,16 +68,26 @@ const App = () => {
   function handleError(error) {
     if (error.response) {
       console.error("Error en la respuesta de OpenAI:", error.response.data);
-      setError({ message: "Error en la respuesta del servicio de OpenAI. Por favor, inténtelo de nuevo.", details: error.response.data });
+      setError({
+        message:
+          "Error en la respuesta del servicio de OpenAI. Por favor, inténtelo de nuevo.",
+        details: error.response.data,
+      });
     } else if (error.request) {
       console.error("Error en la solicitud a OpenAI:", error.request);
-      setError({ message: "No se pudo conectar con el servicio de OpenAI. Por favor, verifique su conexión a internet y vuelva a intentarlo.", details: error.request });
+      setError({
+        message:
+          "No se pudo conectar con el servicio de OpenAI. Por favor, verifique su conexión a internet y vuelva a intentarlo.",
+        details: error.request,
+      });
     } else {
       console.error("Error inesperado:", error.message);
-      setError({ message: "Ocurrió un error inesperado. Por favor, inténtelo de nuevo.", details: error.message });
+      setError({
+        message: "Ocurrió un error inesperado. Por favor, inténtelo de nuevo.",
+        details: error.message,
+      });
     }
   }
-
 
   useEffect(() => {
     if (searchQuery) {
@@ -89,15 +101,24 @@ const App = () => {
   };
   const [arrowClic, setArrowClic] = useState([]);
   const handleToggleSidebar = () => {
-    const sidebar = document.querySelector('.sidebar')
-    sidebar.classList.toggle('toggle')
-    setArrowClic(!arrowClic)
-  }
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.classList.toggle("toggle");
+    setArrowClic(!arrowClic);
+  };
 
   return (
     <div className="w-screen h-screen relative m-0 p-0 bg-slate-500">
-      <InputComponent onSearch={handleSearch} handleToggleSidebar={handleToggleSidebar} />
-      <Sidebar places={places} triggerSearch={triggerSearch} error={error} arrowClic={arrowClic} handleToggleSidebar={handleToggleSidebar} />
+      <InputComponent
+        onSearch={handleSearch}
+        handleToggleSidebar={handleToggleSidebar}
+      />
+      <Sidebar
+        places={places}
+        triggerSearch={triggerSearch}
+        error={error}
+        arrowClic={arrowClic}
+        handleToggleSidebar={handleToggleSidebar}
+      />
       <MapComponent locations={places} />
     </div>
   );
