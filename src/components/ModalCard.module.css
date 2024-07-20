@@ -1,0 +1,48 @@
+.modal_card_marker {
+    padding: 1rem;
+    width: 24rem; 
+    position: fixed; 
+    bottom: 2.5rem; 
+    transform: translateX(-50%) translateY(-1.5rem); 
+}
+  
+  .modal_card_content {
+    height: 100%;
+    border: 2px solid rgba(156, 163, 175, 0.6); 
+    background-color: white; 
+    border-radius: 0.5rem; 
+    overflow: hidden; 
+    padding: 1.5rem;
+  }
+  
+  .modal_card_type{
+    text-transform: uppercase; 
+    font-size: 0.75rem; 
+    font-weight: 500; 
+    color: #9ca3af; 
+    margin-bottom: 0.25rem; 
+    letter-spacing: 0.1rem;
+  }
+  
+  .modal_card_title {
+    font-size: 1.125rem; 
+    font-weight: 500; 
+    color: #111827; 
+    margin-bottom: 0.75rem; 
+  }
+  
+  .modal_card_address{
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+    font-size: 0.75rem; 
+    color: rgb(156 163 175);
+    line-height: 1.625; 
+  }
+
+  .modal_card_description{
+    line-height: 1.625; 
+    margin-bottom: 0.75rem; 
+    color: #4B5563; 
+    font-size: 0.875rem; 
+  }
