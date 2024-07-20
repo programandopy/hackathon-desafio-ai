@@ -16,8 +16,12 @@ const InputComponent = () => {
     })
   }
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    e.preventDefault()
     console.log(promp.full_name)
+    setPromp({
+      full_name: '',
+    })
   }
 
   return (
