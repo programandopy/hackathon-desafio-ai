@@ -1,4 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { AdvancedMarker, APIProvider, Map, Pin, useMap } from '@vis.gl/react-google-maps'
+import { MarkerClusterer } from '@googlemaps/markerclusterer'
+import { Circle } from './Circle.jsx'
 
 import {
   AdvancedMarker,
@@ -11,12 +15,15 @@ import {
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { Circle } from "./Circle.jsx";
 
+
 const center = {
   lat: -27.33056,
   lng: -55.86667,
 };
 
 const MapComponent = ({ locations = [] }) => {
+
+
   return (
     <div className="map">
       <APIProvider
@@ -63,6 +70,7 @@ const PoiMarkers = ({ locations = [] }) => {
     }
   }, [map]);
 
+
   // Update markers, if the markers array has changed
   useEffect(() => {
     clusterer.current?.clearMarkers();
@@ -83,7 +91,6 @@ const PoiMarkers = ({ locations = [] }) => {
       }
     });
   };
-
   return (
     <>
       <Circle
@@ -113,5 +120,6 @@ const PoiMarkers = ({ locations = [] }) => {
     </>
   );
 };
+
 
 export default MapComponent;

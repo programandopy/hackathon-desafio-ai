@@ -1,8 +1,26 @@
-import { useEffect, useState } from "react";
-import MapComponent from "./components/Map.jsx";
+
+import { useState, useEffect } from 'react'
+import MapComponent from './components/Map.jsx'
+import {Loading} from './components/Loading.jsx'
+import Chatbot from './components/Chatbot.jsx';
 import openaiService from "./services/openai.js";
+
+
 const App = () => {
-  let [places, setPlaces] = useState([]);
+  const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setPlaces([
+        { key: '1', location: { lat: -27.33056, lng: -55.86667 } }
+      ]);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   const getPlaces = async (prompt) => {
     places = await openaiService.getPlacesAI(prompt);
