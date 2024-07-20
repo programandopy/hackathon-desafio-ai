@@ -11,6 +11,7 @@ const center = {
 };
 
 const MapComponent = ({locations=[]}) => {
+  console.log(locations)
     return (
       <div className="map">
           <APIProvider
@@ -88,7 +89,7 @@ const PoiMarkers = ({locations=[]}) => {
             fillColor={"#3b82f6"}
             fillOpacity={0.3}
           />
-          {locations.map(poi => (
+          {locations.map((poi) => (
             <AdvancedMarker
               title={poi.key}
               key={poi.key}
