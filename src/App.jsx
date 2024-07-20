@@ -1,24 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MapComponent from './components/Map.jsx'
+import {Loading} from './components/Loading.jsx'
 import Chatbot from './components/Chatbot.jsx';
 
 const App = () => {
-  let [places, setPlaces] = useState([]);
+  const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setPlaces([
+        { key: '1', location: { lat: -27.33056, lng: -55.86667 } }
+      ]);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   return (
-    <div className="App h-screen flex flex-col">
-      <header className="bg-gradient-to-r from-darkblue-500 to-green-700 text-white p-4">
-        <h1 className="text-center text-2xl">Bienvenidos a la Perla del Paraguay</h1>
-      </header>
-      <div className="flex flex-1">
-        <div className="w-2/3 p-4">
-          <MapComponent />
-        </div>
-        <div className="w-1/3 p-4">
-          <Chatbot />
-        </div>
+    <>
+      <div className="w-screen h-screen m-0 p-3 bg-slate-500">
+        <MapComponent locations={places}/>
       </div>
-    </div>
+    </>
   );
 };
 
