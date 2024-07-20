@@ -107,7 +107,6 @@ const App = () => {
 
   return (
     <div className="w-screen h-screen relative m-0 p-0 bg-slate-500">
-      <button className="fixed bg-red-500 top-10 left-0 w-56">Prueba</button>
       <InputComponent
         onSearch={handleSearch}
         handleToggleSidebar={handleToggleSidebar}
