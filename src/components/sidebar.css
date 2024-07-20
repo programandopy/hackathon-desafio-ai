@@ -1,16 +1,26 @@
-.toggle_sidebar {
+.sidebar {
     position: absolute;
-    right: 0;
-    top: 40%;
-    right: -25px;
-    background-color: #fff;
-    padding: .5rem;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100vh;
+    background-color: #ffffff;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+    z-index: 10; /* Aseguramos que la barra lateral esté encima del mapa */
+    overflow-y: scroll;
 }
 
-.sidebar {
-    transition: all 0.3s ease-in-out;
-    transform: translateX(-100%);
-}
 .sidebar.toggle {
     transform: translateX(0);
+}
+
+.toggle_sidebar {
+    position: absolute;
+    left: 200px; /* Ajusta esto según la posición de tu sidebar */
+    top: 40%;
+    background-color: #fff;
+    padding: .5rem;
+    cursor: pointer;
+    z-index: 20; /* Aseguramos que el botón esté encima de la barra lateral */
 }

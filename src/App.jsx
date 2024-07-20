@@ -3,12 +3,14 @@ import MapComponent from './components/Map.jsx';
 import InputComponent from './components/Input.jsx';
 import OpenAI from 'openai';
 import Sidebar from './components/Sidebar.jsx';
+import ToggleButton from './components/ToggleButton.jsx'; // Importa el nuevo componente
 
 const App = () => {
-  let [places, setPlaces] = useState([]);
-  let [error, setError] = useState(null);
-  let [searchQuery, setSearchQuery] = useState('');
-  const [triggerSearch, setTriggerSearch] = useState(false)
+  const [places, setPlaces] = useState([]);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [triggerSearch, setTriggerSearch] = useState(false);
+  const [arrowClic, setArrowClic] = useState(false);
 
   console.log(import.meta.env.VITE_OPENAI_API_KEY);
   const openai = new OpenAI({
@@ -74,7 +76,6 @@ const App = () => {
     }
   }
 
-
   useEffect(() => {
     if (searchQuery) {
       callOpenAI(searchQuery);
@@ -85,17 +86,16 @@ const App = () => {
     setSearchQuery(query);
     setTriggerSearch(true);
   };
-  const [arrowClic, setArrowClic] = useState([]);
+
   const handleToggleSidebar = () => {
-    const sidebar = document.querySelector('.sidebar')
-    sidebar.classList.toggle('toggle')
-    setArrowClic(!arrowClic)
+    setArrowClic(!arrowClic);
   }
 
   return (
     <div className="w-screen h-screen relative m-0 p-0 bg-slate-500">
       <InputComponent onSearch={handleSearch} handleToggleSidebar={handleToggleSidebar} />
-      <Sidebar places={places} triggerSearch={triggerSearch} error={error} arrowClic={arrowClic} handleToggleSidebar={handleToggleSidebar} />
+      <Sidebar places={places} triggerSearch={triggerSearch} error={error} arrowClic={arrowClic} />
+      <ToggleButton handleToggleSidebar={handleToggleSidebar} arrowClic={arrowClic} /> {/* Agrega el botón aquí */}
       <MapComponent locations={places} />
     </div>
   );
