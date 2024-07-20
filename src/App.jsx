@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar.jsx';
 
 const App = () => {
   let [places, setPlaces] = useState([]);
+  let [error, setError] = useState(null);
   let [searchQuery, setSearchQuery] = useState('');
   const [triggerSearch, setTriggerSearch] = useState(false)
 
@@ -15,30 +16,64 @@ const App = () => {
     dangerouslyAllowBrowser: true,
   });
 
-  const context = `Eres un asistente de turismo que se encarga de encontrar lugares turísticos
-  o de interés unicamente de la ciudad de Encarnación, Paraguay.
-  Cada lugar debe ser devuelto en una lista de objetos JSON con las siguientes propiedades: [
+  const context = `
+  Eres un asistente de turismo que se encarga de encontrar lugares turísticos o de interés únicamente de la ciudad de Encarnación, Paraguay. 
+  Cada lugar debe ser devuelto en una lista de objetos JSON con las siguientes propiedades:
+  [
     {
-        "key: "Nombre del lugar",
-        "type": "Comida",
-        "description": "Una breve descripción del lugar y por qué fue incluido en la lista.",
-        "address": "Dirección del lugar",
-        "location": { "lat": valor_numérico, "lng": valor_numérico }
+      "key": "Nombre del lugar",
+      "type": "Comida",
+      "description": "Una breve descripción del lugar y por qué fue incluido en la lista.",
+      "address": "Dirección del lugar",
+      "location": { "lat": valor_numérico, "lng": valor_numérico }
     }
-], necesito que la respuesta sea unicamente el JSON sin texto inicial ni al final`;
+  ];
+  Necesito que la respuesta sea únicamente el JSON sin texto inicial ni final.
+  `;
 
   async function callOpenAI(query) {
-    console.log("Llamando a OpenAI con la consulta:", query);
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [{ role: "user", content: context + ` "${query}"` }],
-    });
+    try {
+      console.log("Llamando a OpenAI con la consulta:", query);
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: context },
+          { role: "user", content: query }
+        ]
+      });
 
-    console.log(`Respuesta desde GPT: ${response.choices[0]}`);
-    const placesJSON = response.choices[0].message.content;
+      if (!response.choices || response.choices.length === 0) {
+        throw new Error("No se recibieron respuestas válidas de OpenAI.");
+      }
+      const placesJSON = response.choices[0].message.content;
+      console.log("Respuesta desde GPT:", placesJSON);
 
-    setPlaces(JSON.parse(placesJSON));
+      try {
+        const places = JSON.parse(placesJSON);
+        setPlaces(places);
+        setError(null);
+      } catch (parseError) {
+        console.error("Error al parsear el JSON:", parseError);
+        throw new Error("Error al procesar la respuesta. Por favor, inténtelo de nuevo.");
+      }
+    } catch (error) {
+      handleError(error);
+    }
   }
+
+  function handleError(error) {
+    if (error.response) {
+      console.error("Error en la respuesta de OpenAI:", error.response.data);
+      setError({ message: "Error en la respuesta del servicio de OpenAI. Por favor, inténtelo de nuevo.", details: error.response.data });
+    } else if (error.request) {
+      console.error("Error en la solicitud a OpenAI:", error.request);
+      setError({ message: "No se pudo conectar con el servicio de OpenAI. Por favor, verifique su conexión a internet y vuelva a intentarlo.", details: error.request });
+    } else {
+      console.error("Error inesperado:", error.message);
+      setError({ message: "Ocurrió un error inesperado. Por favor, inténtelo de nuevo.", details: error.message });
+    }
+  }
+
 
   useEffect(() => {
     if (searchQuery) {
@@ -54,7 +89,7 @@ const App = () => {
   return (
     <div className="w-screen h-screen relative m-0 p-0 bg-slate-500">
       <InputComponent onSearch={handleSearch} />
-      <Sidebar places={places} triggerSearch={triggerSearch} />
+      <Sidebar places={places} triggerSearch={triggerSearch} error={error} />
       <MapComponent locations={places} />
     </div>
   );
