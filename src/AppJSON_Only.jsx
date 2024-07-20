@@ -3,13 +3,15 @@ import MapComponent from "./components/Map.jsx";
 import InputComponent from "./components/Input.jsx";
 import OpenAI from "openai";
 import Sidebar from "./components/Sidebar.jsx";
+import ToggleButton from "./components/ToggleButton.jsx"; // Importa el nuevo componente
 import lugares from "./assets/lugares.json";
 
 const App = () => {
-  let [places, setPlaces] = useState([]);
-  let [error, setError] = useState(null);
-  let [searchQuery, setSearchQuery] = useState("");
+  const [places, setPlaces] = useState([]);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [triggerSearch, setTriggerSearch] = useState(false);
+  const [arrowClic, setArrowClic] = useState(false);
 
   console.log(import.meta.env.VITE_OPENAI_API_KEY);
   const openai = new OpenAI({
@@ -39,7 +41,7 @@ const App = () => {
         model: "gpt-4o-mini",
         messages: [
           { role: "system", content: context },
-          { role: "assistant", content: lugares },
+          { role: "assistant", content: JSON.stringify(lugares) },
           { role: "user", content: query },
         ],
       });
@@ -96,13 +98,12 @@ const App = () => {
   }, [searchQuery]);
 
   const handleSearch = (query) => {
+    setPlaces([]);
     setSearchQuery(query);
     setTriggerSearch(true);
   };
-  const [arrowClic, setArrowClic] = useState([]);
+
   const handleToggleSidebar = () => {
-    const sidebar = document.querySelector(".sidebar");
-    sidebar.classList.toggle("toggle");
     setArrowClic(!arrowClic);
   };
 
@@ -117,8 +118,12 @@ const App = () => {
         triggerSearch={triggerSearch}
         error={error}
         arrowClic={arrowClic}
-        handleToggleSidebar={handleToggleSidebar}
       />
+      <ToggleButton
+        handleToggleSidebar={handleToggleSidebar}
+        arrowClic={arrowClic}
+      />{" "}
+      {/* Agrega el botón aquí */}
       <MapComponent locations={places} />
     </div>
   );
