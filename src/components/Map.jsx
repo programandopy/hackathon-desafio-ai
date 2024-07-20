@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-
 import { AdvancedMarker, APIProvider, Map, Pin, useMap } from '@vis.gl/react-google-maps'
-
 import { MarkerClusterer } from '@googlemaps/markerclusterer'
 import { Circle } from './Circle.jsx'
 
@@ -10,34 +8,34 @@ const center = {
     lng: -55.86667,
 };
 
-const MapComponent = ({locations=[]}) => {
+const MapComponent = ({ locations = [] }) => {
     return (
-      <div className="map">
-          <APIProvider
-            apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-            onLoad={() => console.log("Maps API has loaded.")}
-          >
-              <Map
-                defaultZoom={13}
-                defaultCenter={center}
-                onCameraChanged={ev =>
-                  console.debug(
-                    "camera changed:",
-                    ev.detail.center,
-                    "zoom:",
-                    ev.detail.zoom
-                  )
-                }
-                mapId="da37f3254c6a6d1c"
-              >
-                  <PoiMarkers locations={locations}/>
-              </Map>
-          </APIProvider>
-      </div>
+        <div className="map w-full h-full relative">
+            <APIProvider
+                apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+                onLoad={() => console.log("Maps API has loaded.")}
+            >
+                <Map
+                    defaultZoom={13}
+                    defaultCenter={center}
+                    onCameraChanged={ev =>
+                        console.debug(
+                            "camera changed:",
+                            ev.detail.center,
+                            "zoom:",
+                            ev.detail.zoom
+                        )
+                    }
+                    mapId="da37f3254c6a6d1c"
+                >
+                    <PoiMarkers locations={locations} />
+                </Map>
+            </APIProvider>
+        </div>
     );
 }
 
-const PoiMarkers = ({locations=[]}) => {
+const PoiMarkers = ({ locations = [] }) => {
     const map = useMap()
     const [markers, setMarkers] = useState({})
     const clusterer = useRef(null)
@@ -47,7 +45,7 @@ const PoiMarkers = ({locations=[]}) => {
         if (!ev.latLng) return
         map.panTo(ev.latLng)
         setCircleCenter(ev.latLng)
-    })
+    }, [map])
     // Initialize MarkerClusterer, if the map has changed
     useEffect(() => {
         if (!map) return
@@ -78,32 +76,32 @@ const PoiMarkers = ({locations=[]}) => {
     }
 
     return (
-      <>
-          <Circle
-            radius={800}
-            center={circleCenter}
-            strokeColor={"#0c4cb3"}
-            strokeOpacity={1}
-            strokeWeight={3}
-            fillColor={"#3b82f6"}
-            fillOpacity={0.3}
-          />
-          {locations.map(poi => (
-            <AdvancedMarker
-              title={poi.key}
-              key={poi.key}
-              position={poi.location}
-              clickable={true}
-              onClick={handleClick}
-            >
-                <Pin
-                  background={'#FBBC04'}
-                  glyphColor={'#1a70fd'}
-                  borderColor={'#1a70fd'}
-                />
-            </AdvancedMarker>
-              ))}
-      </>
+        <>
+            <Circle
+                radius={800}
+                center={circleCenter}
+                strokeColor={"#0c4cb3"}
+                strokeOpacity={1}
+                strokeWeight={3}
+                fillColor={"#3b82f6"}
+                fillOpacity={0.3}
+            />
+            {locations.map(poi => (
+                <AdvancedMarker
+                    title={poi.key}
+                    key={poi.key}
+                    position={poi.location}
+                    clickable={true}
+                    onClick={handleClick}
+                >
+                    <Pin
+                        background={'#FBBC04'}
+                        glyphColor={'#1a70fd'}
+                        borderColor={'#1a70fd'}
+                    />
+                </AdvancedMarker>
+            ))}
+        </>
     )
 }
 
