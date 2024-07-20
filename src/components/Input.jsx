@@ -20,7 +20,7 @@ const InputComponent = ({ onSearch }) => {
   };
 
   return (
-    <div className="absolute top-4 left-4 w-full max-w-md px-4 z-20">
+    <div className="absolute top-4 left-4 w-full max-w-md pl-4 pr-4 z-20">
       <form onSubmit={handleSearch}>
         <div className="relative">
           <input

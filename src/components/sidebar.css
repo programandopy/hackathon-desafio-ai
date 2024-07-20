@@ -6,3 +6,11 @@
     background-color: #fff;
     padding: .5rem;
 }
+
+.sidebar {
+    transition: all 0.3s ease-in-out;
+    transform: translateX(-100%);
+}
+.sidebar.toggle {
+    transform: translateX(0);
+}
