@@ -12,33 +12,6 @@ const center = {
   lng: -55.86667,
 };
 
-<<<<<<< HEAD
-const MapComponent = ({ locations = [] }) => {
-  return (
-    <div className="map">
-      <APIProvider
-        apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-        onLoad={() => console.log("Maps API has loaded.")}
-      >
-        <Map
-          defaultZoom={13}
-          defaultCenter={center}
-          onCameraChanged={ev =>
-            console.debug(
-              "camera changed:",
-              ev.detail.center,
-              "zoom:",
-              ev.detail.zoom
-            )
-          }
-          mapId="da37f3254c6a6d1c"
-        >
-          <PoiMarkers locations={locations} />
-        </Map>
-      </APIProvider>
-    </div>
-  );
-=======
 const MapComponent = ({locations=[]}) => {
     return (
       <div className="h-full w-4/5 rounded-md">
@@ -64,7 +37,6 @@ const MapComponent = ({locations=[]}) => {
           </APIProvider>
       </div>
     );
->>>>>>> 0f886e86cee15e8f67e83e2525e60a7c401df4f0
 }
 
 const PoiMarkers = ({ locations = [] }) => {

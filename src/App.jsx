@@ -8,11 +8,8 @@ const App = () => {
   return (
     <>
       <div className="w-full h-full m-0 p-3 bg-slate-50 flex">
-        <MapComponent locations={places}/>
-        <Chat/>
-
-       
-
+        <MapComponent locations={places} />
+        <Chat setPlaces={setPlaces} />
       </div>
     </>
   );
