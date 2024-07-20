@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { HiOutlineSearch } from "react-icons/hi";
 import clsx from 'clsx';
 
-const InputComponent = () => {
+const InputComponent = ({ onSearch }) => {
   const [promp, setPromp] = useState({
     full_name: '',
   });
@@ -16,7 +16,7 @@ const InputComponent = () => {
 
   const handleSearch = (event) => {
     event.preventDefault();  // Prevent the form from submitting normally
-    console.log(promp.full_name);
+    onSearch(promp.full_name);  // Call the onSearch function passed as prop
   };
 
   return (

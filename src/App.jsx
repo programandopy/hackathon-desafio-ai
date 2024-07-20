@@ -1,35 +1,19 @@
-import { useEffect, useState } from 'react'
-import MapComponent from './components/Map.jsx'
-
+import { useEffect, useState } from 'react';
+import MapComponent from './components/Map.jsx';
 import InputComponent from './components/Input.jsx';
-
 import OpenAI from 'openai';
-
 
 const App = () => {
   let [places, setPlaces] = useState([]);
-  //   key: "Hotel Savoy",
-  //   description: "Hotel ubicado en la Avda Costanera / Padre Bolik, con una excelente vista al río y cómodas instalaciones. Teléfono: 0982 3600751.",
-  //   location: { "lat": -27.3216808, "lng": -55.8700276 },
-  //   type: "Alojamiento",
-  //   address: "Avda Costanera / Padre Bolik"
-  // },
- 
-  // {
-  //   key: "De la Costa Hotel",
-  //   description: "Hotel situado en la Avda Francia, en el Paseo Gastronómico, ideal para disfrutar de la gastronomía local. Teléfono: 0985 142363.",
-  //   location: { "lat": -27.334355600000002, "lng": -55.87199081254272 },
-  //   type: "Alojamiento",
-  //   address: "Avda Francia – Paseo Gastronómico"
-  // },]); 
+  let [searchQuery, setSearchQuery] = useState('');
 
-  console.log(import.meta.env.VITE_OPENAI_API_KEY)
+  console.log(import.meta.env.VITE_OPENAI_API_KEY);
   const openai = new OpenAI({
     apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true},
-  );
-  
-  let context = `Eres un asistente de turismo que se encarga de encontrar lugares turísticos
+    dangerouslyAllowBrowser: true,
+  });
+
+  const context = `Eres un asistente de turismo que se encarga de encontrar lugares turísticos
   o de interés unicamente de la ciudad de Encarnación, Paraguay.
   Cada lugar debe ser devuelto en una lista de objetos JSON con las siguientes propiedades: [
     {
@@ -39,30 +23,34 @@ const App = () => {
         "address": "Dirección del lugar",
         "location": { "lat": valor_numérico, "lng": valor_numérico }
     }
-], necesito que la respuesta sea unicamente el JSON sin texto incial ni al final`
+], necesito que la respuesta sea unicamente el JSON sin texto inicial ni al final`;
 
-  async function callOpenAI() {
-    console.log("llamando")
+  async function callOpenAI(query) {
+    console.log("Llamando a OpenAI con la consulta:", query);
     const response = await openai.chat.completions.create({
-      model:"gpt-4o-mini",
-      messages:[{role: "user", content: context}],
-    }
-  );
+      model: "gpt-4o-mini",
+      messages: [{ role: "user", content: context + ` "${query}"` }],
+    });
+
     console.log(`Respuesta desde GPT: ${response.choices[0]}`);
-    console.log(response.choices[0].message.content);
-    console.log(JSON.parse(response.choices[0].message.content));
+    const placesJSON = response.choices[0].message.content;
 
-    setPlaces(JSON.parse(response.choices[0].message.content));
-
+    setPlaces(JSON.parse(placesJSON));
   }
 
   useEffect(() => {
-    callOpenAI();
-  }, []);
+    if (searchQuery) {
+      callOpenAI(searchQuery);
+    }
+  }, [searchQuery]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
 
   return (
     <div className="w-screen h-screen relative m-0 p-0 bg-slate-500">
-      <InputComponent />
+      <InputComponent onSearch={handleSearch} />
       <MapComponent locations={places} />
     </div>
   );
