@@ -12,6 +12,7 @@ const center = {
   lng: -55.86667,
 };
 
+<<<<<<< HEAD
 const MapComponent = ({ locations = [] }) => {
   return (
     <div className="map">
