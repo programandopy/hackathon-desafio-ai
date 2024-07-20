@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import MapComponent from './components/Map.jsx';
 import InputComponent from './components/Input.jsx';
 import OpenAI from 'openai';
+import Sidebar from './components/Sidebar.jsx';
 
 const App = () => {
   let [places, setPlaces] = useState([]);
   let [searchQuery, setSearchQuery] = useState('');
+  const [triggerSearch, setTriggerSearch] = useState(false)
 
   console.log(import.meta.env.VITE_OPENAI_API_KEY);
   const openai = new OpenAI({
@@ -46,11 +48,13 @@ const App = () => {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
+    setTriggerSearch(true);
   };
 
   return (
     <div className="w-screen h-screen relative m-0 p-0 bg-slate-500">
       <InputComponent onSearch={handleSearch} />
+      <Sidebar places={places} triggerSearch={triggerSearch} />
       <MapComponent locations={places} />
     </div>
   );

@@ -1,0 +1,8 @@
+.toggle_sidebar {
+    position: absolute;
+    right: 0;
+    top: 40%;
+    right: -25px;
+    background-color: #fff;
+    padding: .5rem;
+}

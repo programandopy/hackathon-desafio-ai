@@ -29,11 +29,11 @@ const InputComponent = ({ onSearch }) => {
             onChange={handleChange}
             placeholder='¿Qué estás buscando?'
             className={clsx(
-              'block w-full z-10 rounded-lg border-none bg-white p-3 pr-10 text-sm text-black',
+              'block w-full z-10 rounded-lg border-solid border-2 border-sky-500 bg-white p-3 pr-10 text-sm text-black',
               'focus:outline-none focus:ring-2 focus:ring-blue-500'
             )}
           />
-          <button 
+          <button
             type='submit'
             className="absolute inset-y-0 right-0 flex items-center pr-3"
           >
