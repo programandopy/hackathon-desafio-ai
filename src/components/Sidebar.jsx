@@ -4,14 +4,13 @@ import Card from './Card';
 import { HiMenu } from "react-icons/hi";
 import './sidebar.css'
 import { HiOutlineXCircle } from "react-icons/hi";
+import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
 
-const Sidebar = ({ places, triggerSearch,error }) => {
+const Sidebar = ({ places, triggerSearch, error, handleToggleSidebar, arrowClic }) => {
   const [filteredPlaces, setFilteredPlaces] = useState([]);
+ 
   const [localTriggerSearch, setLocalTriggerSearch] = useState(triggerSearch)
-  const handleToggleSidebar = () => {
-    const sidebar = document.querySelector('.sidebar')
-    sidebar.classList.toggle('toggle')
-  }
+  
   useEffect(() => {
     setFilteredPlaces(places);
     setLocalTriggerSearch(triggerSearch)
@@ -38,7 +37,10 @@ const Sidebar = ({ places, triggerSearch,error }) => {
             />
           ))
         }
-        <button className='toggle_sidebar' onClick={handleToggleSidebar}><HiMenu />
+        <button className='toggle_sidebar' onClick={handleToggleSidebar}>
+            {
+              arrowClic ? <IoIosArrowForward /> :  <IoIosArrowBack />
+            }
         </button>
       </div>
     </>

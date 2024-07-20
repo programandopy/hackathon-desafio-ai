@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { HiOutlineSearch } from "react-icons/hi";
 import clsx from 'clsx';
 
-const InputComponent = ({ onSearch }) => {
+const InputComponent = ({ onSearch, handleToggleSidebar }) => {
   const [promp, setPromp] = useState({
     full_name: '',
   });
-
+  const [sidebarToggled, setSidebarToggled] = useState(false);
   const handleChange = ({ target }) => {
     setPromp({
       ...promp,
@@ -16,6 +16,10 @@ const InputComponent = ({ onSearch }) => {
 
   const handleSearch = (event) => {
     event.preventDefault();  // Prevent the form from submitting normally
+    if (!sidebarToggled) {
+      handleToggleSidebar();
+      setSidebarToggled(true);  // Mark the sidebar as toggled
+    }
     onSearch(promp.full_name);  // Call the onSearch function passed as prop
   };
 

@@ -85,11 +85,17 @@ const App = () => {
     setSearchQuery(query);
     setTriggerSearch(true);
   };
+  const [arrowClic, setArrowClic] = useState([]);
+  const handleToggleSidebar = () => {
+    const sidebar = document.querySelector('.sidebar')
+    sidebar.classList.toggle('toggle')
+    setArrowClic(!arrowClic)
+  }
 
   return (
     <div className="w-screen h-screen relative m-0 p-0 bg-slate-500">
-      <InputComponent onSearch={handleSearch} />
-      <Sidebar places={places} triggerSearch={triggerSearch} error={error} />
+      <InputComponent onSearch={handleSearch} handleToggleSidebar={handleToggleSidebar} />
+      <Sidebar places={places} triggerSearch={triggerSearch} error={error} arrowClic={arrowClic} handleToggleSidebar={handleToggleSidebar} />
       <MapComponent locations={places} />
     </div>
   );
