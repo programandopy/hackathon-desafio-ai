@@ -2,6 +2,8 @@
 
 ## Introducción:
 
+
+
 El desafío de tu equipo es crear un chat bot integrado a un mapa que permita a los usuarios
 buscar y visualizar lugares turísticos o de interés, los cuales se deberán visualizar en un mapa.
 Utilizarás la API de OpenAI para obtener información sobre estos lugares y se te proporcionará código

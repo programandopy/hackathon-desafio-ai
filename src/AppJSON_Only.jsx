@@ -4,6 +4,7 @@ import InputComponent from "./components/Input.jsx";
 import OpenAI from "openai";
 import Sidebar from "./components/Sidebar.jsx";
 import ToggleButton from "./components/ToggleButton.jsx"; // Importa el nuevo componente
+import lugares from "./assets/lugares.json";
 
 const App = () => {
   const [places, setPlaces] = useState([]);
@@ -40,6 +41,7 @@ const App = () => {
         model: "gpt-4o-mini",
         messages: [
           { role: "system", content: context },
+          { role: "assistant", content: JSON.stringify(lugares) },
           { role: "user", content: query },
         ],
       });
